@@ -36,11 +36,13 @@ export const ModalContactDetail: FC<ModalProps> = ({ isOpen, onClose, id }) => {
               Last Name: {capitalizeFirstLetter(contactDetail.last_name)}
             </span>
             <br />
+            <span>Contact Number:</span>
+            <br />
             {contactDetail.phones?.length > 0 &&
               contactDetail.phones.map((contact: any) => {
                 return (
                   <div>
-                    <span>Contact Number: {contact.number}</span>
+                    <span> - {contact.number}</span>
                   </div>
                 );
               })}
