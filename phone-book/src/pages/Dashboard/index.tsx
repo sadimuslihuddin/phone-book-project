@@ -94,6 +94,10 @@ const Dashboard = () => {
               </Card>
             );
           })}
+        <div className="d-flex justify-content-center mb-5">
+          <Button>Prev</Button>
+          <Button className="ms-3">Next</Button>
+        </div>
       </Container>
       <ModalAddContact
         data={dataContact}
