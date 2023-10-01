@@ -10,7 +10,7 @@ import {
   Input,
   FormFeedback,
 } from "reactstrap";
-import { ADD_CONTACT_WITH_PHONES } from "../gqls";
+import { ADD_CONTACT_WITH_PHONES, EDIT_CONTACT } from "../gqls";
 import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { validator } from "../utils/validator";
@@ -23,8 +23,9 @@ type FormValues = {
 };
 
 export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
-  const [number, setNumber] = useState(data || []);
+  const [number, setNumber] = useState(data?.phones || []);
   const [addContact] = useMutation(ADD_CONTACT_WITH_PHONES);
+  const [editContact] = useMutation(EDIT_CONTACT);
   const edit = data ? true : false;
 
   const {
@@ -36,21 +37,31 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
 
   const onSubmit = async (values: FormValues) => {
     let phones = [];
-    console.log(values.phones);
 
     for (let i = 0; i < values?.phones?.length; i++) {
       phones.push(values.phones[i]);
     }
 
     try {
-      console.log(phones);
-      await addContact({
-        variables: {
-          first_name: values.first_name,
-          last_name: values.last_name,
-          phones: phones,
-        },
-      });
+      if (edit) {
+        await editContact({
+          variables: {
+            id: data.id,
+            _set: {
+              first_name: values.first_name,
+              last_name: values.last_name,
+            },
+          },
+        });
+      } else {
+        await addContact({
+          variables: {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            phones: phones,
+          },
+        });
+      }
       onClose();
     } catch (e) {}
   };
@@ -98,7 +109,7 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
             Add Number <i className="bi bi-plus-lg ms-2"></i>
           </Button>
           {number &&
-            number.map((num: any, index: number) => {
+            number?.map((num: any, index: number) => {
               return (
                 <input
                   type="text"

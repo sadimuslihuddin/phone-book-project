@@ -65,6 +65,19 @@ export const ADD_CONTACT_WITH_PHONES = gql`
   }
 `;
 
+export const EDIT_CONTACT = gql`
+  mutation EditContactById($id: Int!, $_set: contact_set_input) {
+    update_contact_by_pk(pk_columns: { id: $id }, _set: $_set) {
+      id
+      first_name
+      last_name
+      phones {
+        number
+      }
+    }
+  }
+`;
+
 export const DELETE_CONTACT = gql`
   mutation MyMutation($id: Int!) {
     delete_contact_by_pk(id: $id) {
