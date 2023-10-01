@@ -94,7 +94,7 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
             {...register("last_name")}
           />
           <div className="my-3">Phone Number List</div>
-          <Button onClick={() => addNumber()}>
+          <Button color="primary" onClick={() => addNumber()}>
             Add Number <i className="bi bi-plus-lg ms-2"></i>
           </Button>
           {number &&
@@ -114,7 +114,7 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
             })}
           <br />
           <div className="text-center">
-            <Button className="mt-3" type="submit">
+            <Button color="success" className="mt-3" type="submit">
               Submit
             </Button>
           </div>

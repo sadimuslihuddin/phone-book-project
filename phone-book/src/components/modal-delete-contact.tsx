@@ -31,10 +31,13 @@ export const ModalDelete: FC<ModalProps> = ({ isOpen, onClose, id }) => {
         <CardBody>
           <span>Do you want to delete this contact?</span>
           <div className="d-flex mt-3">
-            <Button className="ms-auto" onClick={() => onSubmit()}>
+            <Button
+              color="primary"
+              className="ms-auto"
+              onClick={() => onSubmit()}>
               Yes
             </Button>
-            <Button className="ms-3" onClick={() => onClose()}>
+            <Button color="danger" className="ms-3" onClick={() => onClose()}>
               Cancel
             </Button>
           </div>

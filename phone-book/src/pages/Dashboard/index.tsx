@@ -55,18 +55,16 @@ const Dashboard = () => {
   console.log(contactId);
   return (
     <div>
-      <Navbar style={{ borderBottom: "1px solid #000" }}>
-        <NavbarBrand href="/">GetContact</NavbarBrand>
+      <Navbar style={{ borderBottom: "1px solid rgba(0,0,0,0.3)" }}>
+        <NavbarBrand href="/">Phone Book App</NavbarBrand>
       </Navbar>
       <Container className="mt-5">
-        <Card>
-          <CardBody className="d-flex">
-            <Button className="ms-3" onClick={() => toggleModalAddContact()}>
-              Add Contact
-              <i className="bi bi-plus-lg ms-2"></i>
-            </Button>
-          </CardBody>
-        </Card>
+        <div className="text-end">
+          <Button color="primary" onClick={() => toggleModalAddContact()}>
+            Add Contact
+            <i className="bi bi-plus-lg ms-2"></i>
+          </Button>
+        </div>
         {contact &&
           contact.map((phone: any) => {
             return (
@@ -74,21 +72,20 @@ const Dashboard = () => {
                 <CardBody className="text-start d-flex">
                   <div>
                     <span>
-                      First Name: {capitalizeFirstLetter(phone.first_name)}
-                    </span>
-                    <br />
-                    <span>
-                      Last Name: {capitalizeFirstLetter(phone.last_name)}
+                      {capitalizeFirstLetter(phone.first_name)}{" "}
+                      {capitalizeFirstLetter(phone.last_name)}
                     </span>
                     <br />
                     <span>Phone Number: {phone.phones[0]?.number}</span>
                   </div>
                   <Button
+                    color="danger"
                     className="ms-auto"
                     onClick={() => toggleDelete(phone.id)}>
                     Delete
                   </Button>
                   <Button
+                    color="primary"
                     className="ms-3"
                     onClick={() => toggleModalContactDetail(phone)}>
                     Detail
