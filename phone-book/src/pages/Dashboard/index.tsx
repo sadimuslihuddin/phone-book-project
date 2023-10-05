@@ -97,6 +97,15 @@ const Dashboard = () => {
             <i className="bi bi-plus-lg ms-2"></i>
           </Button>
         </div>
+        <div className="text-start" style={{ order: 1 }}>
+          <h4>Favorite</h4>
+          <div className="line-bottom"></div>
+        </div>
+
+        <div className="text-start" style={{ order: 3 }}>
+          <h4>Contact List</h4>
+          <div className="line-bottom"></div>
+        </div>
         {contact &&
           contact.map((phone: any) => {
             return (
@@ -144,7 +153,9 @@ const Dashboard = () => {
               </Card>
             );
           })}
-        <div className="d-flex justify-content-center mb-5">
+        <div
+          className="d-flex justify-content-center mb-5"
+          style={{ order: 6 }}>
           <Button onClick={() => prevPage()}>Prev</Button>
           <Button className="ms-3" onClick={() => nextPage()}>
             Next
