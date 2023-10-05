@@ -16,6 +16,15 @@ import { capitalizeFirstLetter } from "../../utils/formatter";
 import { ModalContactDetail } from "../../components/modal-contact-detail";
 import { ModalAddContact } from "../../components/modal-add-contact";
 import { ModalDelete } from "../../components/modal-delete-contact";
+import { updatePaginatedData } from "../../utils/query";
+
+const gparam = {
+  limit: 10,
+  order_by: {
+    first_name: "asc",
+  },
+  offset: 0,
+};
 
 const Dashboard = () => {
   const [modalAddContact, setModalAddContact] = useState(false);
@@ -25,13 +34,8 @@ const Dashboard = () => {
   const [contactId, setContactId] = useState("");
   const [dataContact, setDataContact] = useState();
 
-  const { data } = useQuery(GET_CONTACT_LIST, {
-    variables: {
-      limit: 10,
-      order_by: {
-        created_at: "desc",
-      },
-    },
+  const { data, fetchMore } = useQuery(GET_CONTACT_LIST, {
+    variables: gparam,
   });
 
   const toggleModalAddContact = () => {
@@ -50,13 +54,34 @@ const Dashboard = () => {
     setContactId(id);
   };
 
+  const updateData = () => {
+    fetchMore({
+      variables: gparam,
+      updateQuery: (previousResult, { fetchMoreResult }) =>
+        updatePaginatedData("contact", previousResult, fetchMoreResult),
+    });
+  };
+
+  const prevPage = () => {
+    gparam.offset = gparam.offset >= 10 ? gparam.offset - 10 : gparam.offset;
+    updateData();
+  };
+
+  const nextPage = () => {
+    gparam.offset = gparam.offset + 10;
+    updateData();
+  };
+
   const contact = _.get(data, "contact");
 
-  console.log(contactId);
   return (
     <div>
       <Navbar style={{ borderBottom: "1px solid rgba(0,0,0,0.3)" }}>
-        <NavbarBrand href="/">Phone Book App</NavbarBrand>
+        <div></div>
+        <div>
+          <h4 className="my-3">Phone Book App</h4>
+        </div>
+        <div></div>
       </Navbar>
       <Container className="mt-5">
         <div className="text-end">
@@ -95,8 +120,10 @@ const Dashboard = () => {
             );
           })}
         <div className="d-flex justify-content-center mb-5">
-          <Button>Prev</Button>
-          <Button className="ms-3">Next</Button>
+          <Button onClick={() => prevPage()}>Prev</Button>
+          <Button className="ms-3" onClick={() => nextPage()}>
+            Next
+          </Button>
         </div>
       </Container>
       <ModalAddContact
