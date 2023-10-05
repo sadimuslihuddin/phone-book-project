@@ -10,7 +10,7 @@ import {
   NavbarBrand,
 } from "reactstrap";
 import { GET_CONTACT_LIST } from "../../gqls";
-import { css } from "@emotion/react";
+// import { css } from "@emotion/css";
 import _ from "lodash";
 import { capitalizeFirstLetter } from "../../utils/formatter";
 import { ModalContactDetail } from "../../components/modal-contact-detail";
@@ -33,6 +33,8 @@ const Dashboard = () => {
 
   const [contactId, setContactId] = useState("");
   const [dataContact, setDataContact] = useState();
+
+  const [bookmark, setBookMark] = useState<string[]>([]);
 
   console.log(dataContact);
 
@@ -73,6 +75,10 @@ const Dashboard = () => {
     updateData();
   };
 
+  const handleBookMark = (id: string) => {
+    setBookMark([...bookmark, id]);
+  };
+
   const contact = _.get(data, "contact");
 
   return (
@@ -84,7 +90,7 @@ const Dashboard = () => {
         </div>
         <div></div>
       </Navbar>
-      <Container className="mt-5">
+      <Container className="mt-5 d-flex flex-column">
         <div className="text-end">
           <Button color="primary" onClick={() => toggleModalAddContact()}>
             Add Contact
@@ -94,7 +100,10 @@ const Dashboard = () => {
         {contact &&
           contact.map((phone: any) => {
             return (
-              <Card className="my-3">
+              <Card
+                className={`${
+                  bookmark.includes(phone.id) ? "favorite" : "non-favorite"
+                } my-3`}>
                 <CardBody className="text-start d-flex">
                   <div>
                     <span>
@@ -105,8 +114,17 @@ const Dashboard = () => {
                     <span>Phone Number: {phone.phones[0]?.number}</span>
                   </div>
                   <Button
-                    color="danger"
+                    color="outline"
                     className="ms-auto"
+                    onClick={() => handleBookMark(phone.id)}>
+                    <i
+                      className={`bi bi-bookmark${
+                        bookmark.includes(phone.id) ? `-fill` : ``
+                      }`}></i>
+                  </Button>
+                  <Button
+                    color="danger"
+                    className="bookmark ms-3"
                     onClick={() => toggleDelete(phone.id)}>
                     Delete
                   </Button>

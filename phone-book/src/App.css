@@ -10,6 +10,14 @@
   pointer-events: none;
 }
 
+.favorite {
+  order: 1;
+}
+
+.non-favorite {
+  order: 2;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
