@@ -34,8 +34,6 @@ export const ModalAddContact: FC<ModalProps> = ({
   const [editPhones] = useMutation(EDIT_PHONE);
   const edit = data ? true : false;
 
-  console.log(data, data?.phones, number);
-
   const {
     register,
     handleSubmit,

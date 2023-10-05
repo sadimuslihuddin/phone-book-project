@@ -36,8 +36,6 @@ const Dashboard = () => {
 
   const [bookmark, setBookMark] = useState<string[]>([]);
 
-  console.log(dataContact);
-
   const { data, fetchMore } = useQuery(GET_CONTACT_LIST, {
     variables: gparam,
   });
@@ -76,6 +74,14 @@ const Dashboard = () => {
   };
 
   const handleBookMark = (id: string) => {
+    console.log(bookmark);
+    if (bookmark.includes(id)) {
+      const index = bookmark.findIndex((ids) => ids === id);
+      let bookmarks = bookmark;
+      let removed = bookmarks.splice(index, 1);
+      console.log(index, removed, bookmarks);
+      setBookMark(bookmarks);
+    }
     setBookMark([...bookmark, id]);
   };
 
@@ -97,7 +103,7 @@ const Dashboard = () => {
             <i className="bi bi-plus-lg ms-2"></i>
           </Button>
         </div>
-        <div className="text-start" style={{ order: 1 }}>
+        <div className="text-start mb-4" style={{ order: 1 }}>
           <h4>Favorite</h4>
           <div className="line-bottom"></div>
         </div>

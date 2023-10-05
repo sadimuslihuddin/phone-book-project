@@ -20,8 +20,6 @@ export const ModalContactDetail: FC<ModalProps> = ({
     setModalEdit(!modalEdit);
   };
 
-  console.log(contactDetail);
-
   return (
     <div>
       <Modal isOpen={isOpen} fade>
