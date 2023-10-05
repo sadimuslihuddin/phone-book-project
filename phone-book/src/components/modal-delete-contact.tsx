@@ -3,9 +3,14 @@ import React, { FC } from "react";
 import { Button, Card, CardBody, CardHeader, Modal } from "reactstrap";
 import { DELETE_CONTACT } from "../gqls";
 
-type ModalProps = { isOpen: any; onClose: any; id: any };
+type ModalProps = { isOpen: any; onClose: any; updateData: any; id: any };
 
-export const ModalDelete: FC<ModalProps> = ({ isOpen, onClose, id }) => {
+export const ModalDelete: FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  updateData,
+  id,
+}) => {
   const [deleteContact] = useMutation(DELETE_CONTACT);
 
   const onSubmit = async () => {
@@ -16,6 +21,7 @@ export const ModalDelete: FC<ModalProps> = ({ isOpen, onClose, id }) => {
         },
       });
       onClose();
+      updateData();
     } catch (e) {}
   };
 

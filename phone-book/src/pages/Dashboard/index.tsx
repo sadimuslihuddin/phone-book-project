@@ -138,7 +138,12 @@ const Dashboard = () => {
         updateData={updateData}
         isOpen={modalAddContact}
         onClose={toggleModalAddContact}></ModalAddContact>
-      <ModalDelete id={contactId} isOpen={modalDelete} onClose={toggleDelete} />
+      <ModalDelete
+        updateData={updateData}
+        id={contactId}
+        isOpen={modalDelete}
+        onClose={toggleDelete}
+      />
     </div>
   );
 };
