@@ -34,19 +34,20 @@ const Dashboard = () => {
   const [contactId, setContactId] = useState("");
   const [dataContact, setDataContact] = useState();
 
+  console.log(dataContact);
+
   const { data, fetchMore } = useQuery(GET_CONTACT_LIST, {
     variables: gparam,
   });
 
   const toggleModalAddContact = () => {
     setModalAddContact(!modalAddContact);
-    console.log("t");
   };
 
   const toggleModalContactDetail = (phone: any) => {
     setModalContactDetail(!modalContactDetail);
-    setContactId(phone?.id);
     setDataContact(phone);
+    setContactId(phone?.id);
   };
 
   const toggleDelete = (id: string) => {
@@ -115,6 +116,12 @@ const Dashboard = () => {
                     onClick={() => toggleModalContactDetail(phone)}>
                     Detail
                   </Button>
+                  <ModalContactDetail
+                    data={phone}
+                    updateData={updateData}
+                    isOpen={phone.id === contactId && modalContactDetail}
+                    onClose={toggleModalContactDetail}
+                  />
                 </CardBody>
               </Card>
             );
@@ -128,15 +135,9 @@ const Dashboard = () => {
       </Container>
       <ModalAddContact
         data={dataContact}
+        updateData={updateData}
         isOpen={modalAddContact}
         onClose={toggleModalAddContact}></ModalAddContact>
-      {contactId && (
-        <ModalContactDetail
-          id={contactId}
-          isOpen={modalContactDetail}
-          onClose={toggleModalContactDetail}
-        />
-      )}
       <ModalDelete id={contactId} isOpen={modalDelete} onClose={toggleDelete} />
     </div>
   );

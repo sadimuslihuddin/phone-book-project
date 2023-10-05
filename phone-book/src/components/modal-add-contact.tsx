@@ -10,23 +10,31 @@ import {
   Input,
   FormFeedback,
 } from "reactstrap";
-import { ADD_CONTACT_WITH_PHONES, EDIT_CONTACT } from "../gqls";
-import _ from "lodash";
+import { ADD_CONTACT_WITH_PHONES, EDIT_CONTACT, EDIT_PHONE } from "../gqls";
+import _, { update } from "lodash";
 import { useForm } from "react-hook-form";
 import { validator } from "../utils/validator";
 
-type ModalProps = { isOpen: any; onClose: any; data: any };
+type ModalProps = { isOpen: any; onClose: any; data: any; updateData: any };
 type FormValues = {
   first_name: string;
   last_name: string;
   phones: Array<any>;
 };
 
-export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
-  const [number, setNumber] = useState(data?.phones || []);
+export const ModalAddContact: FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  data,
+  updateData,
+}) => {
+  const [number, setNumber] = useState(data?.phones);
   const [addContact] = useMutation(ADD_CONTACT_WITH_PHONES);
   const [editContact] = useMutation(EDIT_CONTACT);
+  const [editPhones] = useMutation(EDIT_PHONE);
   const edit = data ? true : false;
+
+  console.log(data, data?.phones, number);
 
   const {
     register,
@@ -53,6 +61,20 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
             },
           },
         });
+
+        await _.map(phones, (phone, index) => {
+          editPhones({
+            variables: {
+              pk_columns: {
+                number: data?.phones[index]?.number,
+                contact_id: data.id,
+              },
+              new_phone_number: phone.number,
+            },
+          });
+        });
+
+        updateData();
       } else {
         await addContact({
           variables: {
@@ -65,8 +87,6 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
       onClose();
     } catch (e) {}
   };
-
-  console.log(getValues(), register("first_name"));
 
   const addNumber = () => {
     setNumber([...number, { number: "" }]);
@@ -114,7 +134,7 @@ export const ModalAddContact: FC<ModalProps> = ({ isOpen, onClose, data }) => {
                 <input
                   type="text"
                   id="phones"
-                  className="form-control my-2"
+                  className="form-control my-3"
                   minLength={4}
                   maxLength={15}
                   defaultValue={num ? num?.number : ""}

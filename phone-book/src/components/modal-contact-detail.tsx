@@ -6,21 +6,21 @@ import _ from "lodash";
 import { capitalizeFirstLetter } from "../utils/formatter";
 import { ModalAddContact } from "./modal-add-contact";
 
-type ModalProps = { isOpen: any; onClose: any; id: any };
+type ModalProps = { isOpen: any; onClose: any; data: any; updateData: any };
 
-export const ModalContactDetail: FC<ModalProps> = ({ isOpen, onClose, id }) => {
+export const ModalContactDetail: FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  data: contactDetail,
+  updateData,
+}) => {
   const [modalEdit, setModalEdit] = useState(false);
-  const { data } = useQuery(GET_CONTACT_DETAIL, {
-    variables: {
-      id: id,
-    },
-  });
-
-  const contactDetail = _.get(data, "contact_by_pk");
 
   const toggleModalEdit = () => {
     setModalEdit(!modalEdit);
   };
+
+  console.log(contactDetail);
 
   return (
     <div>
@@ -68,6 +68,7 @@ export const ModalContactDetail: FC<ModalProps> = ({ isOpen, onClose, id }) => {
         </Card>
       </Modal>
       <ModalAddContact
+        updateData={updateData}
         data={contactDetail}
         isOpen={modalEdit}
         onClose={toggleModalEdit}></ModalAddContact>
